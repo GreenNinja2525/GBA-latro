@@ -70,9 +70,9 @@ jobs:
         run: docker compose -f docker-compose.yml run --rm gbalatro sh -c "make -j$(nproc) && ./scripts/get_memory_map.sh"
 
       - name: 'Upload Artifact'
-        if: ${{ inputs.upload-build-artifact }}
+        if: ${{ github.event_name != 'workflow_call' || inputs.upload-build-artifact }}
         uses: actions/upload-artifact@v4
         with:
           name: build-out
-          path: build
+          path: build/
           retention-days: 5
