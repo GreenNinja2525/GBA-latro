@@ -1,58 +1,53 @@
-# Balatro-GBA
+# Balatro-GBA <img width="48" height="64" alt="newjoker" src="https://github.com/user-attachments/assets/cc88e4b2-9ff4-4793-8dc5-ed3a01669a77"/>
 
 [![Build Status](https://img.shields.io/github/actions/workflow/status/GBALATRO/balatro-gba/build_ci_workflow.yml?style=flat&logo=github&branch=main&label=Builds&labelColor=gray&color=default&maxAge=7200)](https://github.com/GBALATRO/balatro-gba/actions)
 [![Open Issues](https://img.shields.io/github/issues/GBALATRO/balatro-gba?style=flat&color=red&label=Issues&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTggOS41YTEuNSAxLjUgMCAxIDAgMC0zIDEuNSAxLjUgMCAwIDAgMCAzWiI+PC9wYXRoPjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNOCAwYTggOCAwIDEgMSAwIDE2QTggOCAwIDAgMSA4IDBaTTEuNSA4YTYuNSA2LjUgMCAxIDAgMTMgMCA2LjUgNi41IDAgMCAwLTEzIDBaIj48L3BhdGg+PC9zdmc+)](https://github.com/GBALATRO/balatro-gba/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/GBALATRO/balatro-gba?style=flat&color=indigo&label=Pull%20Requests&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTEuNSAzLjI1YTIuMjUgMi4yNSAwIDEgMSAzIDIuMTIydjUuMjU2YTIuMjUxIDIuMjUxIDAgMSAxLTEuNSAwVjUuMzcyQTIuMjUgMi4yNSAwIDAgMSAxLjUgMy4yNVptNS42NzctLjE3N0w5LjU3My42NzdBLjI1LjI1IDAgMCAxIDEwIC44NTRWMi41aDFBMi41IDIuNSAwIDAgMSAxMy41IDV2NS42MjhhMi4yNTEgMi4yNTEgMCAxIDEtMS41IDBWNWExIDEgMCAwIDAtMS0xaC0xdjEuNjQ2YS4yNS4yNSAwIDAgMS0uNDI3LjE3N0w3LjE3NyAzLjQyN2EuMjUuMjUgMCAwIDEgMC0uMzU0Wk0zLjc1IDIuNWEuNzUuNzUgMCAxIDAgMCAxLjUuNzUuNzUgMCAwIDAgMC0xLjVabTAgOS41YS43NS43NSAwIDEgMCAwIDEuNS43NS43NSAwIDAgMCAwLTEuNVptOC4yNS43NWEuNzUuNzUgMCAxIDAgMS41IDAgLjc1Ljc1IDAgMCAwLTEuNSAwWiI+PC9wYXRoPjwvc3ZnPg==)](https://github.com/GBALATRO/balatro-gba/pulls)
 [![Discussions](https://img.shields.io/github/discussions/GBALATRO/balatro-gba?style=flat&color=blue&label=Discussions&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTEuNzUgMWg4LjVjLjk2NiAwIDEuNzUuNzg0IDEuNzUgMS43NXY1LjVBMS43NSAxLjc1IDAgMCAxIDEwLjI1IDEwSDcuMDYxbC0yLjU3NCAyLjU3M0ExLjQ1OCAxLjQ1OCAwIDAgMSAyIDExLjU0M1YxMGgtLjI1QTEuNzUgMS43NSAwIDAgMSAwIDguMjV2LTUuNUMwIDEuNzg0Ljc4NCAxIDEuNzUgMVpNMS41IDIuNzV2NS41YzAgLjEzOC4xMTIuMjUuMjUuMjVoMWEuNzUuNzUgMCAwIDEgLjc1Ljc1djIuMTlsMi43Mi0yLjcyYS43NDkuNzQ5IDAgMCAxIC41My0uMjJoMy41YS4yNS4yNSAwIDAgMCAuMjUtLjI1di01LjVhLjI1LjI1IDAgMCAwLS4yNS0uMjVoLTguNWEuMjUuMjUgMCAwIDAtLjI1LjI1Wm0xMyAyYS4yNS4yNSAwIDAgMC0uMjUtLjI1aC0uNWEuNzUuNzUgMCAwIDEgMC0xLjVoLjVjLjk2NiAwIDEuNzUuNzg0IDEuNzUgMS43NXY1LjVBMS43NSAxLjc1IDAgMCAxIDE0LjI1IDEySDE0djEuNTQzYTEuNDU4IDEuNDU4IDAgMCAxLTIuNDg3IDEuMDNMOS4yMiAxMi4yOGEuNzQ5Ljc0OSAwIDAgMSAuMzI2LTEuMjc1Ljc0OS43NDkgMCAwIDEgLjczNC4yMTVsMi4yMiAyLjIydi0yLjE5YS43NS43NSAwIDAgMSAuNzUtLjc1aDFhLjI1LjI1IDAgMCAwIC4yNS0uMjVaIj48L3BhdGg+PC9zdmc+)](https://github.com/GBALATRO/balatro-gba/discussions)
-
 # Disclaimer:
 
-This project is a non-profit fan tribute to Balatro for the Game Boy Advance. It is **not affiliated with or endorsed by Playstack or LocalThunk**.  This version is a **minimal tech-demo**, intended for those who already own and know the official game. Refer to the wiki below for more info.  All rights remain with the original holders. No donations or funding for this project will be accepted.
+This project is a **non-profit fan tribute** to Balatro for the Game Boy Advance. It is **not affiliated with or endorsed by Playstack or LocalThunk**. This version is a **minimal tech-demo**, intended for those who **already own** and know the official game. Refer to the wiki below for more info about the official game. **All rights remain with the original holders.**
 
 <a href="https://balatrowiki.org/">
-  <img src="https://custom-icon-badges.demolab.com/badge/Balatro%20Wiki-194c84?logo=bigjoker&logoColor=fff" alt="Balatro Wiki" width="150">
+  <img src="https://custom-icon-badges.demolab.com/badge/Balatro%20Wiki-red?logo=bigjoker&logoColor=fff" alt="Balatro Wiki" width="165">
 </a>
 
----
-
-## **Please buy the official game from the source below:**
-
+## Please buy the official game from the source below:
 <a href="https://www.playbalatro.com/">
-  <img src="https://custom-icon-badges.demolab.com/badge/Buy_Balatro-194c84?logo=bigjoker&logoColor=fff" alt="Buy Balatro" width="200">
+  <img src="https://custom-icon-badges.demolab.com/badge/Buy_Balatro_$-darkgreen?logo=credit-card&logoColor=fff" alt="Buy Balatro" width="225">
 </a>
 
----
-
-### **Download Roms from the Releases Tab:**
-
+## Download Roms from the Releases Tab:
 <a href="https://github.com/cellos51/balatro-gba/releases/">
-  <img src="https://custom-icon-badges.demolab.com/badge/Rom_Releases-194c84?logo=bigjoker&logoColor=fff" alt="Download Roms from Release tab" width="225">
+  <img src="https://custom-icon-badges.demolab.com/badge/Rom_Releases_▼-194c84?logo=download&logoColor=fff" alt="Download Roms from Release tab" width="375">
 </a>
 
----
-### **Gameplay** 
+### **Gameplay:** 
 
 https://github.com/user-attachments/assets/54a9e2e9-1a02-48d5-bb9d-5ab257a7e03b
-
 
 ### Controls: 
 (D-Pad: Navigation)
 
 (A: Pick Card/Make Selections)
 
-#### When on the hand row during round
+#### [When on the hand row during a round.]
 (L: Play Hand)
 
 (R: Discard Hand)
 
 (B: Deselect All Cards)
 
-#### When on the joker row in the shop or during round
+#### [When on the Joker row in the shop or during a round.]
 (L: Sell Joker)
 
 (Hold A: Swap Owned Jokers or Playing Cards in the Shop or Round)
 
-# Contributing
+## Features:
+- **52 Fully Functional Jokers**
+- **Card Reordering**
+
+## Contributing:
 
 If you would like to contribute, please refer to CONTRIBUTING.md.
 
@@ -65,7 +60,7 @@ _Some users may find this option to be the easiest way to build locally._
 - _This option **avoids** setting up the development environment as described below._
 - _No additional software besides **docker desktop** is required._
 
-### Step-by-Step
+### Step-by-Step:
 
 1.) Install [docker desktop](https://docs.docker.com/desktop/) for your operating system.
 
@@ -156,18 +151,18 @@ Disregard Steps 3-4 and instead click the green code button on the main reposito
 
 # **Credits:**
 
-## **Game**
+## **Game:**
 This GBA implementation is based on Balatro which is designed and created by LocalThunk and published by Playstack.
 
 **Original Developer of Balatro-GBA: @cellos51**
 
 See repository contributors list for code contribution credits to this GBA implementation.
-## **Music**
+## **Music:**
 Music arrangement is made by @cellos51 based on original Balatro soundtrack by [LouisF](https://louisfmusic.com/) and [transcription by MrCrimit](https://musescore.com/user/8237321/scores/14590660).
-## **Imagery**
+## **Imagery:**
 Sprites and backgrounds are based on original Balatro imagery created by LocalThunk.
 See [Joker Art Discussion](https://github.com/cellos51/balatro-gba/discussions/69) for full credits for each joker sprite.
-## **Sounds**
+## **Sounds:**
 For the mult and xmult sound effects: [Toy records#06-E3-02.wav by poissonmort](https://freesound.org/s/253249/) used under License: Attribution 4.0
 
 All other sound effects were created by LocalThunk and are used under Creative Commons - CC0 license. 
