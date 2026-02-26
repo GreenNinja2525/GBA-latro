@@ -14,12 +14,12 @@ This project is a **non-profit fan tribute** to Balatro for the Game Boy Advance
 
 ## Please buy the official game from the source below:
 <a href="https://www.playbalatro.com/">
-  <img src="https://custom-icon-badges.demolab.com/badge/Buy_Balatro_$-darkgreen?logo=credit-card&logoColor=fff" alt="Buy Balatro" width="225">
+  <img src="https://custom-icon-badges.demolab.com/badge/Buy_Balatro-darkgreen?logo=credit-card&logoColor=fff" alt="Buy Balatro" width="225">
 </a>
 
 ## Download Roms from the Releases Tab:
 <a href="https://github.com/cellos51/balatro-gba/releases/">
-  <img src="https://custom-icon-badges.demolab.com/badge/Rom_Releases_▼-194c84?logo=download&logoColor=fff" alt="Download Roms from Release tab" width="375">
+  <img src="https://custom-icon-badges.demolab.com/badge/Rom_Releases-194c84?logo=download&logoColor=fff" alt="Download Roms from Release tab" width="375">
 </a>
 
 ### **Gameplay:** 
@@ -43,13 +43,19 @@ https://github.com/user-attachments/assets/54a9e2e9-1a02-48d5-bb9d-5ab257a7e03b
 
 (Hold A: Swap Owned Jokers or Playing Cards in the Shop or Round)
 
-## Features:
-- **52 Fully Functional Jokers**
-- **Card Reordering**
-
 ## Contributing:
 
 If you would like to contribute, please refer to CONTRIBUTING.md.
+
+## Features:
+- **52 Jokers, 8 Antes, Faithful retro music and spritework**
+- **Compatibility with original Game Boy Advance/Game Boy Player hardware***
+  
+  *Has not been tested fully with flashcarts or emulators, compatibility with them is not guaranteed.
+## [Features Not Implemented]:
+- **Planet, Tarot, Spectral Cards**
+- **Vouchers, Skip Tags, Booster Packs, Boss Blind Effects**
+- **Endless Mode, Decks, Stakes, Card Modifiers, Legendary Jokers**
 
 # **Build Instructions:**
 
