@@ -239,7 +239,7 @@ static void change_background(enum BackgroundId id);
 static void display_temp_score(u32 value);
 static void display_score(u32 value);
 static void check_flaming_score(void);
-static void display_round(int value);
+static void display_round(void);
 static void display_hands(int value);
 static void display_discards(int value);
 static void set_hand(void);
@@ -507,19 +507,19 @@ static const int HAND_SPACING_LUT[MAX_HAND_SIZE] =
 
 static const HandValues hand_base_values[] = {
     {.chips = 0,   .mult = 0,  .display_name = NULL     }, // NONE
-    {.chips = 5,   .mult = 1,  .display_name = "HIGH C" }, // HIGH_CARD
-    {.chips = 10,  .mult = 2,  .display_name = "PAIR"   }, // PAIR
-    {.chips = 20,  .mult = 2,  .display_name = "2 PAIR" }, // TWO_PAIR
+    {.chips = 5,   .mult = 1,  .display_name = "Hi-Card"}, // HIGH_CARD
+    {.chips = 10,  .mult = 2,  .display_name = "Pair"   }, // PAIR
+    {.chips = 20,  .mult = 2,  .display_name = "2 Pair" }, // TWO_PAIR
     {.chips = 30,  .mult = 3,  .display_name = "3 OAK"  }, // THREE_OF_A_KIND
-    {.chips = 30,  .mult = 4,  .display_name = "STRT"   }, // STRAIGHT
-    {.chips = 35,  .mult = 4,  .display_name = "FLUSH"  }, // FLUSH
-    {.chips = 40,  .mult = 4,  .display_name = "FULL H" }, // FULL_HOUSE
+    {.chips = 30,  .mult = 4,  .display_name = "Strt"   }, // STRAIGHT
+    {.chips = 35,  .mult = 4,  .display_name = "Flush"  }, // FLUSH
+    {.chips = 40,  .mult = 4,  .display_name = "Full H" }, // FULL_HOUSE
     {.chips = 60,  .mult = 7,  .display_name = "4 OAK"  }, // FOUR_OF_A_KIND
-    {.chips = 100, .mult = 8,  .display_name = "STRT F" }, // STRAIGHT_FLUSH
-    {.chips = 100, .mult = 8,  .display_name = "ROYAL F"}, // ROYAL_FLUSH
+    {.chips = 100, .mult = 8,  .display_name = "Strt F" }, // STRAIGHT_FLUSH
+    {.chips = 100, .mult = 8,  .display_name = "Royal F"}, // ROYAL_FLUSH
     {.chips = 120, .mult = 12, .display_name = "5 OAK"  }, // FIVE_OF_A_KIND
-    {.chips = 140, .mult = 14, .display_name = "FLUSH H"}, // FLUSH_HOUSE
-    {.chips = 160, .mult = 16, .display_name = "FLUSH 5"}  // FLUSH_FIVE
+    {.chips = 140, .mult = 14, .display_name = "Flush H"}, // FLUSH_HOUSE
+    {.chips = 160, .mult = 16, .display_name = "Flush 5"}  // FLUSH_FIVE
 };
 
 static const SubStateActionFn shop_state_actions[] = {
@@ -750,6 +750,7 @@ void game_init()
     ante = STARTING_ANTE;
     money = STARTING_MONEY;
     score = STARTING_SCORE;
+    round = 0;
 
     blind_select_tokens[BLIND_TYPE_SMALL] = blind_token_new(
         BLIND_TYPE_SMALL,
@@ -1805,7 +1806,7 @@ static void check_flaming_score(void)
     }
 }
 
-static void display_round(int value)
+static void display_round(void)
 {
     // tte_erase_rect_wrapper(ROUND_TEXT_RECT);
     tte_printf(
@@ -1839,10 +1840,13 @@ static void print_hand_type(const char* hand_type_str)
 {
     if (hand_type_str == NULL)
         return; // NULL-checking paranoia
+
+    Rect hand_type_rect = HAND_TYPE_RECT;
+    update_text_rect_to_center_str(&hand_type_rect, hand_type_str, SCREEN_LEFT);
     tte_printf(
         "#{P:%d,%d; cx:0x%X000}%s",
-        HAND_TYPE_RECT.left,
-        HAND_TYPE_RECT.top,
+        hand_type_rect.left,
+        hand_type_rect.top,
         TTE_WHITE_PB,
         hand_type_str
     );
@@ -4681,7 +4685,8 @@ static void game_blind_select_handle_input()
             play_sfx(SFX_BUTTON, MM_BASE_PITCH_RATE, BUTTON_SFX_VOLUME);
             state_info[game_state].substate = BLIND_SELECTED_ANIM_SEQ;
             timer = TM_ZERO;
-            display_round(++round);
+            ++round;
+            display_round();
         }
         else if (current_blind != BLIND_TYPE_BOSS)
         {
@@ -4842,7 +4847,7 @@ static inline void game_start(void)
         deck_get_max_size()
     );
 
-    display_round(round); // Set the round display
+    display_round();      // Set the round display
     display_score(score); // Set the score display
 
     display_chips(); // Set the chips display
@@ -4980,7 +4985,7 @@ static void game_over_on_exit()
 
     game_init();
 
-    display_round(round);
+    display_round();
     display_score(score);
     display_chips();
     display_mult();
