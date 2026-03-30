@@ -48,8 +48,8 @@ https://github.com/user-attachments/assets/54a9e2e9-1a02-48d5-bb9d-5ab257a7e03b
 If you would like to contribute, please refer to CONTRIBUTING.md.
 
 ### Includes:
-- **52 Jokers, 8 Antes, Faithful retro music and spritework**
-- **Compatibility with original Game Boy Advance/Game Boy Player hardware***
+- **~50 Jokers, 8 Antes, Faithful retro music and spritework**
+- **Full Compatibility with original Game Boy Advance/Game Boy Player hardware***
   
   > *Has not been tested fully with flashcarts or emulators, compatibility with them is not guaranteed.
 ### Features Not Implemented:
