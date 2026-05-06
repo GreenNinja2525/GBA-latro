@@ -3,10 +3,10 @@ name: Build CI
 on:
   push:
     branches:
-      - main
+      - test
   pull_request:
     branches:
-      - main
+      - test
   workflow_dispatch:
     inputs:
       clear-cache:
@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
 
       - name: Get docker image cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: /tmp/docker-cache
           key: docker-images-${{ hashFiles('docker-compose.yml') }}
@@ -70,9 +70,9 @@ jobs:
         run: docker compose -f docker-compose.yml run --rm gbalatro sh -c "make -j$(nproc) && ./scripts/get_memory_map.sh"
 
       - name: 'Upload Artifact'
-        if: ${{ inputs.upload-build-artifact }}
-        uses: actions/upload-artifact@v6
+        if: ${{ github.event_name != 'workflow_call' || inputs.upload-build-artifact }}
+        uses: actions/upload-artifact@v4
         with:
           name: build-out
-          path: build
-          retention-days: 5
+          path: build/
+          retention-days: 4
