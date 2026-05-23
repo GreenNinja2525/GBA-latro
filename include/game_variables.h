@@ -7,6 +7,7 @@
 #define GAME_VARIABLES_H
 
 #include "blind.h"
+#include "random.h"
 
 #include <tonc.h>
 
@@ -23,6 +24,11 @@
 #define DEFAULT_MUSIC_VOLUME  VOLUME_OPTION_MAX
 #define DEFAULT_SOUND_VOLUME  VOLUME_OPTION_MAX
 
+#define MAX_HANDS    4
+#define MAX_DISCARDS 4
+
+#define DEFAULT_HAND_SIZE 8
+
 /**
  * @brief A central location for all game variables.
  *
@@ -34,14 +40,14 @@ typedef struct
     // Internal variables
 
     s32 timer; // This might already exist in libtonc but idk so i'm just making my own
-    u32 rng_seed;
-    u32 rng_step; // Position in the rng sequence.
+    RngInfo rng_info;
 
     // Variables visible by the player
 
-    int round;
-    int ante;
-    int money;
+    s32 round;
+    s32 ante;
+    s32 money;
+    s32 hand_size;
 
     // Blind variables
 
@@ -49,6 +55,12 @@ typedef struct
     enum BlindType next_boss_blind;
     enum BlindState blinds_states[NUM_BLINDS_PER_ANTE];
 
+    s32 hands;
+    s32 discards;
+    u32 score;
+
+    Sprite* playing_blind_token;
+    Sprite* round_end_blind_token;
     // Options variables
 
     // BY DEFAULT IS SET TO 1, but if changed to 2 or more, should speed up all (or most) of the
