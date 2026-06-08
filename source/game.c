@@ -14,6 +14,7 @@
 #include "game/main_menu.h"
 #include "game/options_menu.h"
 #include "game/round_end.h"
+#include "game/run_setup.h"
 #include "game/shop.h"
 #include "game_variables.h"
 #include "graphic_utils.h"
@@ -211,10 +212,7 @@ static StateInfo state_info[] = {
 #undef DEF_STATE_INFO
 };
 
-static StateMachine game_sm = {
-    .state_infos = &state_info[0],
-    .num_infos = GAME_STATE_MAX,
-};
+static StateMachine game_sm = STATE_MACHINE_DEFINE(state_info, GAME_STATE_MAX);
 
 // clang-format off
 static SelectionGridRow game_playing_selection_rows[] = {
@@ -269,8 +267,8 @@ static enum PlayState play_state = PLAY_STARTING;
 GameVariables g_game_vars = {
     .timer = 0, .rng_info = {0, 0},
 
-    .round = 0, .ante = 0, .money = 0,
-    .hand_size = DEFAULT_HAND_SIZE,
+    .round = 0, .ante = 0, .money = 0, .hand_size = DEFAULT_HAND_SIZE,
+    .deck = DECK_TYPE_RED,
 
     .current_blind = BLIND_TYPE_SMALL,
     .next_boss_blind = BLIND_TYPE_BIG,
@@ -321,9 +319,6 @@ static List _owned_jokers_list;
 static List _discarded_jokers_list;
 static List _expired_jokers_list;
 
-BITSET_DEFINE(_avail_jokers_bitset, MAX_DEFINABLE_JOKERS)
-static List _shop_jokers_list;
-
 // Stacks
 static CardObject* played[MAX_SELECTION_SIZE] = {NULL};
 static int played_top = -1;
@@ -338,22 +333,6 @@ static int discard_top = -1;
 static int shortcut_joker_count = 0;
 
 static int four_fingers_joker_count = 0;
-
-GBAL_UNUSED
-static inline bool is_shop_joker_avail(int joker_id)
-{
-    return bitset_get_idx(&_avail_jokers_bitset, joker_id);
-}
-
-static inline void reset_shop_jokers(void)
-{
-    int num_jokers = get_joker_registry_size();
-    bitset_clear(&_avail_jokers_bitset);
-    for (int i = 0; i < num_jokers; i++)
-    {
-        bitset_set_idx(&_avail_jokers_bitset, i, true);
-    }
-}
 
 static inline void played_push(CardObject* card_object)
 {
@@ -397,11 +376,6 @@ static inline Card* discard_pop()
     return discard_pile[discard_top--];
 }
 
-static inline void jokers_available_to_shop_init(void)
-{
-    reset_shop_jokers();
-}
-
 void game_init()
 {
     state_machine_remove(&game_sm);
@@ -410,11 +384,10 @@ void game_init()
     _owned_jokers_list = list_init();
     _discarded_jokers_list = list_init();
     _expired_jokers_list = list_init();
-    _shop_jokers_list = list_init();
     // TODO: Move this to an initialization of the play scoring states
     _joker_scored_itr = list_itr_create(&_owned_jokers_list);
 
-    jokers_available_to_shop_init();
+    game_shop_reset();
 
     g_game_vars.hands = MAX_HANDS;
     g_game_vars.discards = MAX_DISCARDS;
@@ -453,7 +426,6 @@ void game_reset()
     list_clear(&_owned_jokers_list);
     list_clear(&_discarded_jokers_list);
     list_clear(&_expired_jokers_list);
-    list_clear(&_shop_jokers_list);
 
     game_init();
 
@@ -631,21 +603,6 @@ List* get_discarded_jokers_list(void)
     return &_discarded_jokers_list;
 }
 
-List* get_shop_jokers_list(void)
-{
-    return &_shop_jokers_list;
-}
-
-Bitset* get_avail_jokers_bitset(void)
-{
-    return &_avail_jokers_bitset;
-}
-
-void set_shop_joker_avail(int joker_id, bool avail)
-{
-    bitset_set_idx(&_avail_jokers_bitset, joker_id, avail);
-}
-
 bool is_shortcut_joker_active(void)
 {
     return shortcut_joker_count > 0;
@@ -691,7 +648,7 @@ void remove_owned_joker(int owned_joker_idx)
         shortcut_joker_count--;
     }
 
-    set_shop_joker_avail(joker_object->joker->id, true);
+    game_shop_set_joker_avail(joker_object->joker->id, true);
     list_remove_at_idx(&_owned_jokers_list, owned_joker_idx);
 }
 
@@ -2591,8 +2548,6 @@ static void game_playing_on_update(void)
 
 void game_start(void)
 {
-    rng_shuffle_seed();
-
     affine_background_change_background(AFFINE_BG_GAME);
 
     g_game_vars.hands = MAX_HANDS;

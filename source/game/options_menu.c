@@ -359,7 +359,6 @@ static void update_volume_slider_graphics(enum OptionButtonRows sel_row)
 void game_options_menu_change_background(void)
 {
     tte_erase_screen();
-    CBB_CLEAR(MAIN_BG_CBB);
 
     GRIT_CPY(pal_bg_mem, background_options_menu_gfxPal);
     GRIT_CPY(&tile_mem[MAIN_BG_CBB], background_options_menu_gfxTiles);
@@ -612,7 +611,7 @@ static bool music_volume_row_on_selection_changed(
     }
 
     update_volume_slider_graphics(MUSIC_VOLUME_ROW_IDX);
-    mmSetModuleVolume(MM_MODULE_FULL_VOLUME * g_game_vars.music_volume / VOLUME_OPTION_MAX);
+    set_volume(volume_module_step_to_val(g_game_vars.music_volume));
 
     return true;
 }

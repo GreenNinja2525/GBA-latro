@@ -66,6 +66,11 @@ typedef struct
      * @brief The current state of the state machine, the offset into state_infos
      */
     int state;
+
+    /**
+     * @brief Flag to determine if statemachine is already running it's active_update function
+     */
+    bool registered;
 } StateMachine;
 
 /**
@@ -101,7 +106,14 @@ void state_machine_change_state(StateMachine* state_machine, int new_state);
 void noop(void);
 
 // clang-format off
-#define STATE_INFO_UPDATE_FN_ONLY(fn) {.on_init = noop, .on_update = fn, .on_exit = noop}
+#define STATE_INFO_UPDATE_FN_ONLY(fn)                 {.on_init = noop,    .on_update = fn,        .on_exit = noop}
+#define STATE_INFO_INIT_UPDATE_FN(init_fn, update_fn) {.on_init = init_fn, .on_update = update_fn, .on_exit = noop}
+#define STATE_MACHINE_DEFINE(infos, num) \
+{                                        \
+    .state_infos = &infos[0],            \
+    .num_infos = num,                    \
+    .registered = false,                 \
+};
 // clang-format on
 
 #endif // STATE_MACHINE_H

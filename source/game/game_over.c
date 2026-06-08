@@ -4,7 +4,6 @@
 #include "audio_utils.h"
 #include "button.h"
 #include "game.h"
-#include "game/main_menu.h"
 #include "graphic_utils.h"
 #include "layout.h"
 #include "random.h"
@@ -33,6 +32,8 @@ static const Rect     NEW_RUN_BTN_SRC_RECT       = {  0,  30,   4,  31};
 // clang-format on
 
 static const u32 GAME_OVER_ANIM_FRAMES = 15;
+static const mm_byte GAME_OVER_SFX_VOL = 178;     // 70% of MM_SFX_FULL_VOLUME
+static const mm_word GAME_OVER_WHOOSH_RATE = 922; // 90% of MM_BASE_PITCH_RATE
 
 static enum EndCondition condition = END_CONDITION_NONE;
 static u32 timer = TM_ZERO;
@@ -63,11 +64,18 @@ static void game_over_init(enum EndCondition init_condition)
 
 void game_win_on_init(void)
 {
+    play_sfx(SFX_GAME_WIN, MM_BASE_PITCH_RATE, SFX_DEFAULT_VOLUME);
+
     game_over_init(END_CONDITION_WIN);
 }
 
 void game_lose_on_init(void)
 {
+    play_sfx(SFX_NEGATIVE_LOSE, MM_BASE_PITCH_RATE / 2, GAME_OVER_SFX_VOL);
+    play_sfx(SFX_WHOOSH2_LOSE, GAME_OVER_WHOOSH_RATE, GAME_OVER_SFX_VOL);
+
+    play_lose_music();
+
     game_over_init(END_CONDITION_LOSS);
 }
 
@@ -127,6 +135,7 @@ void game_over_on_update(void)
 
 void game_over_on_exit(void)
 {
+    play_regular_music();
     condition = END_CONDITION_NONE;
     game_reset();
     rng_shuffle_seed();
