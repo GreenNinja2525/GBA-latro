@@ -362,12 +362,6 @@ static void game_shop_create_items(void)
 
         sprite_object_print_price_under(joker_object->sprite_object, joker_object->joker->value);
 
-        sprite_position(
-            joker_object_get_sprite(joker_object),
-            fx2int(joker_object->sprite_object->x),
-            fx2int(joker_object->sprite_object->y)
-        );
-
         list_push_back(shop_jokers_list, joker_object);
     }
 }
@@ -893,6 +887,9 @@ static void game_shop_hide_card_desc(void)
             TTE_WHITE_PB,
             reroll_cost
         );
+
+        // Print Deck size that was erased
+        display_deck_size_max();
     }
 
     // Cleanup and change state
@@ -992,21 +989,6 @@ static inline void game_shop_lights_anim_frame(void)
 void game_shop_on_update(void)
 {
     timer++;
-
-    List* shop_jokers_list = &s_shop_jokers_list;
-
-    if (!list_is_empty(shop_jokers_list))
-    {
-        ListItr itr = list_itr_create(shop_jokers_list);
-        JokerObject* joker_object;
-        while ((joker_object = list_itr_next(&itr)))
-        {
-            if (joker_object != NULL)
-            {
-                joker_object_update(joker_object);
-            }
-        }
-    }
 
     if (timer % 20 == 0)
     {
