@@ -589,8 +589,6 @@ void game_run_setup_on_init(void)
         RUN_SETUP_DECK_SPRITE_T_Y
     );
 
-    card_object_update(run_setup_deck);
-
     /* Uncomment these lines when we figure out how to properly restore a game save
     is_saved_game_valid = is_game_data_valid();
     if (is_saved_game_valid)
@@ -634,7 +632,7 @@ void game_run_setup_on_exit(void)
 static void choose_deck_substate_init(void)
 {
     // Show Deck sprite, name and TODO: description
-    obj_unhide(run_setup_deck->sprite_object->sprite->obj, 0);
+    obj_unhide(run_setup_deck->sprite_object->sprite->obj, ATTR0_AFF);
     print_deck_name(g_game_vars.deck, RUN_SETUP_DECK_NAME_TEXT_POS);
     print_deck_description(g_game_vars.deck, RUN_SETUP_DECK_DESC_TEXT_POS);
 
@@ -1094,7 +1092,7 @@ static void resume_substate_init(void)
     tab_set_highlight(RUN_SETUP_TAB_RESUME);
 
     // Show Deck card sprite
-    obj_unhide(run_setup_deck->sprite_object->sprite->obj, 0);
+    obj_unhide(run_setup_deck->sprite_object->sprite->obj, ATTR0_AFF);
 }
 
 // COMMON BUTTONS
