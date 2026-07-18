@@ -1,6 +1,8 @@
 #include "card.h"
 
 #include "graphic_utils.h"
+#include "item.h"
+#include "util.h"
 
 #include <maxmod.h>
 #include <stdlib.h>
@@ -17,17 +19,17 @@
 
 // Card sprites lookup table. First index is the suit, second index is the rank. The value is the
 // tile index.
-const static u16 _card_sprite_lut[NUM_SUITS][NUM_RANKS] = {
+const static u16 CARD_SPRITE_LUT[NUM_SUITS][NUM_RANKS] = {
     {0,   16,  32,  48,  64,  80,  96,  112, 128, 144, 160, 176, 192},
     {208, 224, 240, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400},
     {416, 432, 448, 464, 480, 496, 512, 528, 544, 560, 576, 592, 608},
     {624, 640, 656, 672, 688, 704, 720, 736, 752, 768, 784, 800, 816}
 };
 // Deck sprites lookup table. Index is the deck Id. The value is the tile index.
-const static u16 _deck_sprite_lut[DECK_TYPE_MAX] = {0, 16, 32, 48, 64, 80};
+const static u16 DECK_SPRITE_LUT[DECK_TYPE_MAX] = {0, 16, 32, 48, 64, 80};
 
-bool high_contrast = DEFAULT_HIGH_CONTRAST;
-bool more_readable = DEFAULT_MORE_READABLE;
+static bool s_high_contrast = DEFAULT_HIGH_CONTRAST;
+static bool s_more_readable = DEFAULT_MORE_READABLE;
 
 void card_init()
 {
@@ -36,8 +38,8 @@ void card_init()
 
 void set_cards_high_contrast(bool enable)
 {
-    high_contrast = enable;
-    if (high_contrast)
+    s_high_contrast = enable;
+    if (s_high_contrast)
     {
         GRIT_CPY(&pal_obj_mem[CARD_PB * PAL_ROW_LEN], high_contrast_deck_pal_gfxPal);
     }
@@ -49,17 +51,17 @@ void set_cards_high_contrast(bool enable)
 
 void set_cards_more_readable(bool enable)
 {
-    more_readable = enable;
+    s_more_readable = enable;
 }
 
 bool get_cards_high_contrast(void)
 {
-    return high_contrast;
+    return s_high_contrast;
 }
 
 bool get_cards_more_readable(void)
 {
-    return more_readable;
+    return s_more_readable;
 }
 
 // Card methods
@@ -101,9 +103,10 @@ u8 card_get_value(Card* card)
 CardObject* card_object_new(Card* card)
 {
     CardObject* card_object = POOL_GET(CardObject);
-
+    sprite_object_init((SpriteObject*)card_object);
     card_object->card = card;
-    card_object->sprite_object = sprite_object_new();
+
+    card_object->type = ITEM_TYPE_PLAYING_CARD;
     card_object->selected = false;
 
     return card_object;
@@ -113,7 +116,7 @@ void card_object_destroy(CardObject** card_object)
 {
     if (*card_object == NULL)
         return;
-    sprite_object_destroy(&((*card_object)->sprite_object));
+    sprite_object_destroy((SpriteObject*)(*card_object));
     POOL_FREE(CardObject, *card_object);
     *card_object = NULL;
 }
@@ -121,10 +124,10 @@ void card_object_destroy(CardObject** card_object)
 void card_object_set_sprite(CardObject* card_object, int layer)
 {
     int tile_index = CARD_TID + (layer * CARD_SPRITE_OFFSET);
-    const unsigned int* card_tiles = more_readable ? deck_big_gfxTiles : deck_gfxTiles;
+    const unsigned int* card_tiles = s_more_readable ? deck_big_gfxTiles : deck_gfxTiles;
     memcpy32(
         &tile_mem[TILE_MEM_OBJ_CHARBLOCK0_IDX][tile_index],
-        &card_tiles[_card_sprite_lut[card_object->card->suit][card_object->card->rank] * TILE_SIZE],
+        &card_tiles[CARD_SPRITE_LUT[card_object->card->suit][card_object->card->rank] * TILE_SIZE],
         TILE_SIZE * CARD_SPRITE_OFFSET
     );
     Sprite* sprite = sprite_new(
@@ -134,7 +137,7 @@ void card_object_set_sprite(CardObject* card_object, int layer)
         CARD_PB,
         layer + CARD_STARTING_LAYER
     );
-    sprite_object_set_sprite(card_object->sprite_object, sprite);
+    sprite_object_set_sprite((SpriteObject*)card_object, sprite);
 }
 
 void card_object_set_sprite_face_down(CardObject* card_object, enum DeckType deck, int layer)
@@ -142,7 +145,7 @@ void card_object_set_sprite_face_down(CardObject* card_object, enum DeckType dec
     int tile_index = CARD_TID + (layer * CARD_SPRITE_OFFSET);
     memcpy32(
         &tile_mem[TILE_MEM_OBJ_CHARBLOCK0_IDX][tile_index],
-        &decks_face_down_gfxTiles[_deck_sprite_lut[deck] * TILE_SIZE],
+        &decks_face_down_gfxTiles[DECK_SPRITE_LUT[deck] * TILE_SIZE],
         TILE_SIZE * CARD_SPRITE_OFFSET
     );
     Sprite* sprite = sprite_new(
@@ -152,12 +155,12 @@ void card_object_set_sprite_face_down(CardObject* card_object, enum DeckType dec
         DECK_SPRITES_PB,
         layer + CARD_STARTING_LAYER
     );
-    sprite_object_set_sprite(card_object->sprite_object, sprite);
+    sprite_object_set_sprite((SpriteObject*)card_object, sprite);
 }
 
 void card_object_shake(CardObject* card_object, mm_word sound_id)
 {
-    sprite_object_shake(card_object->sprite_object, sound_id);
+    sprite_object_shake((SpriteObject*)card_object, sound_id);
 }
 
 void card_object_set_selected(CardObject* card_object, bool selected)
@@ -178,5 +181,24 @@ Sprite* card_object_get_sprite(CardObject* card_object)
 {
     if (card_object == NULL)
         return NULL;
-    return sprite_object_get_sprite(card_object->sprite_object);
+    return sprite_object_get_sprite((SpriteObject*)card_object);
+}
+
+int card_object_get_buy_price(Item* card_object)
+{
+    GBAL_RETURN_IF_NULL_RET(card_object, UNDEFINED);
+    ITEM_RETURN_IF_UNEXPECTED_TYPE_RET(card_object, ITEM_TYPE_PLAYING_CARD, UNDEFINED);
+
+    return 1;
+}
+
+void card_object_dispose(Item** card_object_item)
+{
+    GBAL_RETURN_IF_NULL_VOID(card_object_item);
+    GBAL_RETURN_IF_NULL_VOID(*card_object_item);
+    ITEM_RETURN_IF_UNEXPECTED_TYPE_VOID(*card_object_item, ITEM_TYPE_PLAYING_CARD);
+
+    CardObject* card_object = (CardObject*)(*card_object_item);
+    card_object_destroy(&card_object);
+    *card_object_item = NULL;
 }

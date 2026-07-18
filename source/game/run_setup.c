@@ -18,6 +18,7 @@
 #include "state_machine.h"
 #include "util.h"
 
+#include <string.h>
 #include <tonc.h>
 
 // Palette Indices
@@ -29,13 +30,13 @@
 #define BLUE_DISABLED_BTN_MAIN_COLOR_PAL_IDX 13
 #define BACK_BTN_MAIN_COLOR_PAL_IDX          14
 
-#define NEW_RUN_BTN_OUTLINE_COLOR_PAL_IDX    30
-#define RESUME_BTN_OUTLINE_COLOR_PAL_IDX     31
-#define CHANGE_DECK_BTN_OUTINE_COLOR_PAL_IDX 32
-#define SEED_CHECK_BTN_OUTLINE_COLOR_PAL_IDX 33
-#define SEED_DECK_BTN_OUTLINE_COLOR_PAL_IDX  34
-#define PLAY_BTN_OUTLINE_COLOR_PAL_IDX       35
-#define BACK_BTN_OUTLINE_COLOR_PAL_IDX       36
+#define NEW_RUN_BTN_OUTLINE_COLOR_PAL_IDX     30
+#define RESUME_BTN_OUTLINE_COLOR_PAL_IDX      31
+#define CHANGE_DECK_BTN_OUTLINE_COLOR_PAL_IDX 32
+#define SEED_CHECK_BTN_OUTLINE_COLOR_PAL_IDX  33
+#define SEED_DECK_BTN_OUTLINE_COLOR_PAL_IDX   34
+#define PLAY_BTN_OUTLINE_COLOR_PAL_IDX        35
+#define BACK_BTN_OUTLINE_COLOR_PAL_IDX        36
 
 #define KEYBOARD_1_BTN_OUTLINE_COLOR_PAL_IDX 40
 #define KEYBOARD_2_BTN_OUTLINE_COLOR_PAL_IDX 41
@@ -292,7 +293,7 @@ static SelectionGrid choose_deck_selection_grid = {
 static void change_deck_on_pressed(void);
 
 static Button change_deck_button = {
-    CHANGE_DECK_BTN_OUTINE_COLOR_PAL_IDX,
+    CHANGE_DECK_BTN_OUTLINE_COLOR_PAL_IDX,
     CHANGE_DECK_BTN_MAIN_COLOR_PAL_IDX,
     change_deck_on_pressed,
     NULL
@@ -527,7 +528,7 @@ static Button choose_seed_bottom_buttons[2] = {
     }
 };
 
-static const char keyboard_buttons_to_char[KEYBOARD_HEIGHT * KEYBOARD_WIDTH] = {
+static const char KEYBOARD_BUTTONS_TO_CHAR[KEYBOARD_HEIGHT * KEYBOARD_WIDTH] = {
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
     'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
@@ -536,8 +537,8 @@ static const char keyboard_buttons_to_char[KEYBOARD_HEIGHT * KEYBOARD_WIDTH] = {
 // clang-format on
 
 // Size BASE36_MAX_DIGITS + 1 to always have '\0' at the end
-static char seed_str[BASE36_MAX_DIGITS + 1] = {'\0'};
-static u8 seed_cursor_pos = 0;
+static char s_seed_str[BASE36_MAX_DIGITS + 1] = {'\0'};
+static u8 s_seed_cursor_pos = 0;
 
 #pragma endregion
 
@@ -566,6 +567,7 @@ enum RunSetupResumeRows
 
 void game_run_setup_change_background(void)
 {
+    tte_erase_screen();
     GRIT_CPY(pal_bg_mem, background_run_setup_gfxPal);
     GRIT_CPY(&tile_mem[MAIN_BG_CBB], background_run_setup_gfxTiles);
     GRIT_CPY(&se_mem[MAIN_BG_SBB], background_run_setup_gfxMap);
@@ -576,6 +578,22 @@ void game_run_setup_on_init(void)
     state_machine_register(&run_setup_sm);
     game_run_setup_change_background();
 
+    // Apply the current use_seed value if seed is UNDEFINED
+    if (g_game_vars.rng_info.seed == UNDEFINED)
+    {
+        // Make the string empty instead of showing all zeroes
+        memset(s_seed_str, '\0', BASE36_MAX_DIGITS + 1);
+        s_seed_cursor_pos = 0;
+    }
+    // Or use previous Run's seed if it hasn't been reset
+    else
+    {
+        u32_to_base36(g_game_vars.rng_info.seed, s_seed_str);
+        s_seed_cursor_pos = BASE36_MAX_DIGITS;
+        use_seed = true;
+    }
+    toggle_seed_enabled(use_seed);
+
     // Rank doesn't matter, won't see it
     run_setup_deck = card_object_new(card_new(SPADES, ACE));
 
@@ -584,7 +602,7 @@ void game_run_setup_on_init(void)
     card_object_set_sprite_face_down(run_setup_deck, g_game_vars.deck, 0);
 
     sprite_object_position(
-        run_setup_deck->sprite_object,
+        (SpriteObject*)run_setup_deck,
         RUN_SETUP_DECK_SPRITE_T_X,
         RUN_SETUP_DECK_SPRITE_T_Y
     );
@@ -632,7 +650,13 @@ void game_run_setup_on_exit(void)
 static void choose_deck_substate_init(void)
 {
     // Show Deck sprite, name and TODO: description
-    obj_unhide(run_setup_deck->sprite_object->sprite->obj, ATTR0_AFF);
+    {
+        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
+        if (deck_sprite != NULL)
+        {
+            obj_unhide(deck_sprite->obj, ATTR0_AFF);
+        }
+    }
     print_deck_name(g_game_vars.deck, RUN_SETUP_DECK_NAME_TEXT_POS);
     print_deck_description(g_game_vars.deck, RUN_SETUP_DECK_DESC_TEXT_POS);
 
@@ -660,9 +684,9 @@ static void choose_deck_substate_init(void)
     // Set button highlights
     button_set_highlight(&change_deck_button, true);
     button_set_highlight(&choose_deck_bottom_buttons[RUN_SETUP_DECK_BB_USE_SEED], false);
-    toggle_seed_enabled(use_seed); // This just re-applies the current value
     button_set_highlight(&choose_deck_bottom_buttons[RUN_SETUP_DECK_BB_PLAY], false);
     button_set_highlight(&back_button, false);
+    toggle_seed_enabled(use_seed);
 
     // Print button text
     tte_printf(
@@ -784,7 +808,7 @@ static inline void update_seed_text(void)
         RUN_SETUP_SEED_FIELD_TEXT_POS.y,
         TTE_BLACK_PB,
         BASE36_MAX_DIGITS + 1,
-        seed_str
+        s_seed_str
     );
 }
 
@@ -797,7 +821,13 @@ static void seed_keyboard_substate_init(void)
     tte_erase_rect_wrapper(RUN_SETUP_DECK_NAME_DESC_RECT);
 
     // Hide Deck card sprite
-    obj_hide(run_setup_deck->sprite_object->sprite->obj);
+    {
+        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
+        if (deck_sprite != NULL)
+        {
+            obj_hide(deck_sprite->obj);
+        }
+    }
 
     // Clean deck swap screen with frame BG color
     main_bg_se_copy_expand_tile(
@@ -890,9 +920,9 @@ static inline void reroll_seed_str(void)
     rng_shuffle_seed();
     u32 new_seed = rng_get_u32();
     rng_set_seed(new_seed);
-    u32_to_base36(new_seed, seed_str);
+    u32_to_base36(new_seed, s_seed_str);
     update_seed_text();
-    seed_cursor_pos = BASE36_MAX_DIGITS;
+    s_seed_cursor_pos = BASE36_MAX_DIGITS;
 }
 
 /**
@@ -900,10 +930,10 @@ static inline void reroll_seed_str(void)
  */
 static inline void delete_seed_char(void)
 {
-    if (seed_cursor_pos == 0)
+    if (s_seed_cursor_pos == 0)
         return;
 
-    seed_str[--seed_cursor_pos] = '\0';
+    s_seed_str[--s_seed_cursor_pos] = '\0';
     update_seed_text();
 }
 
@@ -914,10 +944,10 @@ static inline void delete_seed_char(void)
  */
 static inline void type_seed_char(enum RunSetupKeyboardButtons key)
 {
-    if (seed_cursor_pos >= BASE36_MAX_DIGITS)
+    if (s_seed_cursor_pos >= BASE36_MAX_DIGITS)
         return;
 
-    seed_str[seed_cursor_pos++] = keyboard_buttons_to_char[key];
+    s_seed_str[s_seed_cursor_pos++] = KEYBOARD_BUTTONS_TO_CHAR[key];
     update_seed_text();
 }
 
@@ -946,8 +976,8 @@ static void keyboard_button_on_pressed(void)
     // The cursor position is unsigned so always positive, but we still need to
     // ensure it doersn't go out of bounds by more than 1 so that we can always
     // substract 1 from it when erasing a character from the seed string.
-    if (seed_cursor_pos > BASE36_MAX_DIGITS)
-        seed_cursor_pos = BASE36_MAX_DIGITS;
+    if (s_seed_cursor_pos > BASE36_MAX_DIGITS)
+        s_seed_cursor_pos = BASE36_MAX_DIGITS;
 
     if (key_hit(DESELECT_CARDS))
         delete_seed_char();
@@ -1092,7 +1122,13 @@ static void resume_substate_init(void)
     tab_set_highlight(RUN_SETUP_TAB_RESUME);
 
     // Show Deck card sprite
-    obj_unhide(run_setup_deck->sprite_object->sprite->obj, ATTR0_AFF);
+    {
+        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
+        if (deck_sprite != NULL)
+        {
+            obj_unhide(deck_sprite->obj, ATTR0_AFF);
+        }
+    }
 }
 
 // COMMON BUTTONS
@@ -1157,9 +1193,11 @@ static void play_on_pressed(void)
 {
     // Apply provided Seed if enabled
     if (use_seed)
-        rng_set_seed(base36_to_u32(seed_str));
+        rng_set_seed(base36_to_u32(s_seed_str));
     else
         rng_shuffle_seed();
+
+    use_seed = false;
 
     game_change_state(GAME_STATE_GAME_START);
 }
