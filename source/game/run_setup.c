@@ -650,13 +650,7 @@ void game_run_setup_on_exit(void)
 static void choose_deck_substate_init(void)
 {
     // Show Deck sprite, name and TODO: description
-    {
-        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
-        if (deck_sprite != NULL)
-        {
-            obj_unhide(deck_sprite->obj, ATTR0_AFF);
-        }
-    }
+    sprite_object_unhide((SpriteObject*)run_setup_deck);
     print_deck_name(g_game_vars.deck, RUN_SETUP_DECK_NAME_TEXT_POS);
     print_deck_description(g_game_vars.deck, RUN_SETUP_DECK_DESC_TEXT_POS);
 
@@ -821,13 +815,7 @@ static void seed_keyboard_substate_init(void)
     tte_erase_rect_wrapper(RUN_SETUP_DECK_NAME_DESC_RECT);
 
     // Hide Deck card sprite
-    {
-        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
-        if (deck_sprite != NULL)
-        {
-            obj_hide(deck_sprite->obj);
-        }
-    }
+    sprite_object_hide((SpriteObject*)run_setup_deck);
 
     // Clean deck swap screen with frame BG color
     main_bg_se_copy_expand_tile(
@@ -918,9 +906,7 @@ static inline void reroll_seed_str(void)
     // Also, don't use the shuffled seed as is, or we'll just end up with sequential seeds when
     // rolling multiple times.
     rng_shuffle_seed();
-    u32 new_seed = rng_get_u32();
-    rng_set_seed(new_seed);
-    u32_to_base36(new_seed, s_seed_str);
+    u32_to_base36(g_game_vars.rng_info.seed, s_seed_str);
     update_seed_text();
     s_seed_cursor_pos = BASE36_MAX_DIGITS;
 }
@@ -1122,13 +1108,7 @@ static void resume_substate_init(void)
     tab_set_highlight(RUN_SETUP_TAB_RESUME);
 
     // Show Deck card sprite
-    {
-        Sprite* deck_sprite = sprite_object_get_sprite((SpriteObject*)run_setup_deck);
-        if (deck_sprite != NULL)
-        {
-            obj_unhide(deck_sprite->obj, ATTR0_AFF);
-        }
-    }
+    sprite_object_unhide((SpriteObject*)run_setup_deck);
 }
 
 // COMMON BUTTONS
@@ -1191,8 +1171,9 @@ static void seed_on_pressed(void)
  */
 static void play_on_pressed(void)
 {
-    // Apply provided Seed if enabled
-    if (use_seed)
+    // Apply provided Seed if enabled, and if we entered one. This prevents us from always using
+    // seed "ZZZZZZ" if we enter the Seed menu and hit Play without typing anything.
+    if (use_seed && strlen(s_seed_str) > 0)
         rng_set_seed(base36_to_u32(s_seed_str));
     else
         rng_shuffle_seed();

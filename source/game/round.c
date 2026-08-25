@@ -589,7 +589,7 @@ static bool game_round_hand_row_on_selection_changed(
              */
             play_sfx(
                 SFX_CARD_FOCUS,
-                MM_BASE_PITCH_RATE + rng_get_u32() % CARD_FOCUS_SFX_PITCH_OFFSET_RANGE,
+                MM_BASE_PITCH_RATE + rng_get_u32(RNG_SEQ_MISC) % CARD_FOCUS_SFX_PITCH_OFFSET_RANGE,
                 SFX_DEFAULT_VOLUME
             );
         }
@@ -609,7 +609,7 @@ static bool game_round_hand_row_on_selection_changed(
              */
             play_sfx(
                 SFX_CARD_FOCUS,
-                MM_BASE_PITCH_RATE + rng_get_u32() % CARD_FOCUS_SFX_PITCH_OFFSET_RANGE,
+                MM_BASE_PITCH_RATE + rng_get_u32(RNG_SEQ_MISC) % CARD_FOCUS_SFX_PITCH_OFFSET_RANGE,
                 SFX_DEFAULT_VOLUME
             );
         }
@@ -1990,7 +1990,7 @@ void game_round_on_init(void)
     // TODO: Hide blind token and display it after sliding blind rect animation
     // if (g_game_vars.playing_blind_token != NULL)
     //{
-    //    obj_hide(g_game_vars.playing_blind_token->obj); // Hide the blind token sprite for now
+    //    sprite_hide(g_game_vars.playing_blind_token); // Hide the blind token sprite for now
     //}
     sprite_destroy(&g_game_vars.round_end_blind_token);
     g_game_vars.round_end_blind_token = blind_token_new(
@@ -2002,7 +2002,7 @@ void game_round_on_init(void)
 
     if (g_game_vars.round_end_blind_token != NULL)
     {
-        obj_hide(g_game_vars.round_end_blind_token->obj); // Hide the blind token sprite for now
+        sprite_hide(g_game_vars.round_end_blind_token); // Hide the blind token sprite for now
     }
 
     Rect blind_req_text_rect = BLIND_REQ_TEXT_RECT;
