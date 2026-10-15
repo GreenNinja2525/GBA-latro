@@ -36,7 +36,10 @@ enum OptionSpeedButtons
     NB_GAME_SPEED_BUTTONS
 };
 
-// Color palette indices
+// Palette indices for colors that change at runtime (i.e. button outlines) start at 16 and are
+// sorted by the position of the buttons in the menu from top to bottom, and from left to right.
+// Indices for static colors (i.e. background and main button colors) range from 0 to 15.
+// The indexing is determined by background_options_menu_gfx.png.
 #define MENU_BUTTON_MAIN_COLOR_PAL_IDX          1
 #define SAVE_BUTTON_MAIN_COLOR_PAL_IDX          3
 #define BACK_BUTTON_MAIN_COLOR_PAL_IDX          4
@@ -572,7 +575,7 @@ static bool game_speed_row_on_selection_changed(
  */
 static void options_menu_row_on_key_transit(SelectionGrid* selection_grid, Selection* selection)
 {
-    if (key_hit(SELECT_CARD))
+    if (key_hit(KEY_CONFIRM))
     {
         button_press(&options_menu_buttons[selection->y][selection->x]);
     }
