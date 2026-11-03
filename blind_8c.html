@@ -217,6 +217,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a5518e6cabc5bcfd4e0ac280abd9f199c" id="r_a5518e6cabc5bcfd4e0ac280abd9f199c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSprite.html">Sprite</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="blind_8c.html#a5518e6cabc5bcfd4e0ac280abd9f199c">blind_token_new</a> (enum <a class="el" href="blind_8h.html#a360ce6465b5b6a404884c21d37759d4a">BlindType</a> type, int x, int y, enum <a class="el" href="blind_8h.html#a72f525224754ea5b65ce95410fa44408">BlindTokenLayers</a> layer)</td></tr>
 <tr class="memdesc:a5518e6cabc5bcfd4e0ac280abd9f199c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new BlindToken sprite.  <br /></td></tr>
 <tr class="separator:a5518e6cabc5bcfd4e0ac280abd9f199c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca11c400d4afb3dd75216f77904ca2b" id="r_aeca11c400d4afb3dd75216f77904ca2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="blind_8c.html#aeca11c400d4afb3dd75216f77904ca2b">increment_blind</a> (enum <a class="el" href="blind_8h.html#a59b2b8e485d0ea561120ae8c6010de1d">BlindState</a> increment_reason)</td></tr>
+<tr class="memdesc:aeca11c400d4afb3dd75216f77904ca2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment g_game_vars.current_blind to the next blind.  <br /></td></tr>
+<tr class="separator:aeca11c400d4afb3dd75216f77904ca2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -655,6 +658,34 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="blind_8c_source.html#l00205">205</a> of file <a class="el" href="blind_8c_source.html">blind.c</a>.</p>
+
+</div>
+</div>
+<a id="aeca11c400d4afb3dd75216f77904ca2b" name="aeca11c400d4afb3dd75216f77904ca2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeca11c400d4afb3dd75216f77904ca2b">&#9670;&#160;</a></span>increment_blind()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void increment_blind </td>
+          <td>(</td>
+          <td class="paramtype">enum <a class="el" href="blind_8h.html#a59b2b8e485d0ea561120ae8c6010de1d">BlindState</a>&#160;</td>
+          <td class="paramname"><em>increment_reason</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Increment g_game_vars.current_blind to the next blind. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">increment_reason</td><td>Expected BLIND_STATE_DEFEATED or BLIND_STATE_SKIPPED - set the state of the pre-increment blind. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="blind_8c_source.html#l00279">279</a> of file <a class="el" href="blind_8c_source.html">blind.c</a>.</p>
 
 </div>
 </div>
