@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"skip__tag_8h.html#a96310ea1e86eba6c150d82be91d9dda2":[3,0,0,30,18],
+"skip__tag_8h.html#aa71d4280647a43e429892779dc90c675":[3,0,0,30,15],
 "skip__tag_8h.html#aa7d0f2a3f4e373b148b2ee1ab60ba7a8":[3,0,0,30,17],
 "skip__tag_8h.html#abe2c209576b28d212c77730c5ae1c2b0":[3,0,0,30,4],
 "skip__tag_8h.html#ad9d99eeb24f7ab9ce15f9392741da1d3":[3,0,0,30,7],
@@ -105,6 +107,7 @@ var NAVTREEINDEX3 =
 "structCardObject.html":[2,0,7],
 "structContainedHandTypes.html":[2,0,8],
 "structGameVariables.html":[2,0,9],
+"structGameVariables.html#a83489b2d1b26c9738f94b4956977ae4c":[2,0,9,0],
 "structHand.html":[2,0,10],
 "structHandValues.html":[2,0,11],
 "structItem.html":[2,0,12],

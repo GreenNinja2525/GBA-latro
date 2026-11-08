@@ -65,8 +65,8 @@ var NAVTREEINDEX =
 [
 "affine__background_8c_source.html",
 "globals_func_r.html",
-"pages.html",
-"skip__tag_8h.html#aa7d0f2a3f4e373b148b2ee1ab60ba7a8"
+"options__menu_8h.html#a9b26816e7cb33161af6dc0b5e2a1bd72",
+"skip__tag_8h.html#a96310ea1e86eba6c150d82be91d9dda2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
