@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['game_20strong_0',['&lt;strong&gt;Game&lt;/strong&gt;',['../md_README.html#autotoc_md40',1,'']]],
+  ['game_0',['&lt;b&gt;Game&lt;/b&gt;',['../md_README.html#autotoc_md40',1,'']]],
   ['game_20won_20t_20start_1',['3. The Game won&apos;t start!',['../index.html#autotoc_md29',1,'']]],
   ['game_5flose_5fon_5finit_2',['game_lose_on_init',['../game__over_8h.html#a18c39117cc43214817b16351ee66afb7',1,'game_over.c']]],
   ['game_5fover_2eh_3',['game_over.h',['../game__over_8h.html',1,'']]],
@@ -23,12 +23,12 @@ var searchData=
   ['get_5ffont_5fpoint_5fstr_20',['get_font_point_str',['../font_8h.html#a0591d220421f2f0094aa80ae39007374',1,'font.c']]],
   ['get_5fhand_5farray_21',['get_hand_array',['../hand_8h.html#aa5beb0f8bda5c454fea80be021e51df1',1,'get_hand_array(void):&#160;hand.c'],['../hand_8c.html#aa5beb0f8bda5c454fea80be021e51df1',1,'get_hand_array(void):&#160;hand.c']]],
   ['get_5fhand_5fdistribution_22',['get_hand_distribution',['../hand_8c.html#a8c39bac46f180817e774ddb765326979',1,'hand.c']]],
-  ['get_5fhand_5fstate_23',['get_hand_state',['../hand_8c.html#a4aaf779a75b1c61697315a7d0defdfe1',1,'get_hand_state(void):&#160;hand.c'],['../hand_8h.html#a4aaf779a75b1c61697315a7d0defdfe1',1,'get_hand_state(void):&#160;hand.c']]],
+  ['get_5fhand_5fstate_23',['get_hand_state',['../hand_8h.html#a4aaf779a75b1c61697315a7d0defdfe1',1,'get_hand_state(void):&#160;hand.c'],['../hand_8c.html#a4aaf779a75b1c61697315a7d0defdfe1',1,'get_hand_state(void):&#160;hand.c']]],
   ['get_5fhand_5ftop_24',['get_hand_top',['../hand_8h.html#a41c74b16743c1e9a1b7409629d2a5c8e',1,'get_hand_top(void):&#160;hand.c'],['../hand_8c.html#a41c74b16743c1e9a1b7409629d2a5c8e',1,'get_hand_top(void):&#160;hand.c']]],
   ['get_5fhand_5ftype_25',['get_hand_type',['../hand_8h.html#a3b870a7b9c35fe38077088a0a4956ef4',1,'get_hand_type(void):&#160;hand.c'],['../hand_8c.html#a3b870a7b9c35fe38077088a0a4956ef4',1,'get_hand_type(void):&#160;hand.c']]],
   ['get_5fitem_5ftype_5ffuncs_26',['get_item_type_funcs',['../item__funcs_8h.html#aa487c0d2967bf235725dfe6383fba4a6',1,'item_funcs.c']]],
   ['get_5fkeyboard_5findex_5ffrom_5fsel_27',['get_keyboard_index_from_sel',['../run__setup_8c.html#a4f8e645ad43810f5bc789c0385b89318',1,'run_setup.c']]],
-  ['get_5fnum_5fcards_5fin_5fhand_28',['get_num_cards_in_hand',['../hand_8c.html#a33f3629ed4aeb01a8fb4f896057d53a4',1,'get_num_cards_in_hand(void):&#160;hand.c'],['../hand_8h.html#a33f3629ed4aeb01a8fb4f896057d53a4',1,'get_num_cards_in_hand(void):&#160;hand.c']]],
+  ['get_5fnum_5fcards_5fin_5fhand_28',['get_num_cards_in_hand',['../hand_8h.html#a33f3629ed4aeb01a8fb4f896057d53a4',1,'get_num_cards_in_hand(void):&#160;hand.c'],['../hand_8c.html#a33f3629ed4aeb01a8fb4f896057d53a4',1,'get_num_cards_in_hand(void):&#160;hand.c']]],
   ['get_5fowned_5fskip_5ftags_29',['get_owned_skip_tags',['../skip__tag_8h.html#aff0f9c2b9ebbce87959c3d80b535c2d3',1,'get_owned_skip_tags(void):&#160;skip_tag.c'],['../skip__tag_8c.html#aff0f9c2b9ebbce87959c3d80b535c2d3',1,'get_owned_skip_tags(void):&#160;skip_tag.c']]],
   ['get_5fplayed_5fdistribution_30',['get_played_distribution',['../round_8c.html#ace375f4cc13086b5d150e53892d471f8',1,'round.c']]],
   ['get_5fplayed_5fsize_31',['get_played_size',['../round_8h.html#a39727c2ef1584b79537ff9bee3e6a5a5',1,'get_played_size(void):&#160;round.c'],['../round_8c.html#a39727c2ef1584b79537ff9bee3e6a5a5',1,'get_played_size(void):&#160;round.c']]],
@@ -36,8 +36,8 @@ var searchData=
   ['get_5fsave_5fheader_33',['get_save_header',['../save_8c.html#aa7c710df5af72243541a55e499e53bd9',1,'save.c']]],
   ['get_5fscored_5fcard_5findex_34',['get_scored_card_index',['../round_8h.html#a2a4916e063f7e60e36f4f4f95d5a0050',1,'get_scored_card_index(void):&#160;round.c'],['../round_8c.html#a2a4916e063f7e60e36f4f4f95d5a0050',1,'get_scored_card_index(void):&#160;round.c']]],
   ['get_5fskip_5ftag_5fregistry_5fentry_35',['get_skip_tag_registry_entry',['../skip__tag_8h.html#afd10c29199110e47beb5f8fcdd93b733',1,'skip_tag_effects.c']]],
-  ['git_20tt_20not_20required_36',['With &lt;tt&gt;Git&lt;/tt&gt; (not required)',['../index.html#autotoc_md24',1,'']]],
-  ['git_20tt_20or_20tt_20make_20tt_20installed_37',['4. It says I don&apos;t have &lt;tt&gt;Git&lt;/tt&gt; or &lt;tt&gt;Make&lt;/tt&gt; installed!',['../index.html#autotoc_md30',1,'']]],
+  ['git_20not_20required_36',['With &lt;span class=&quot;tt&quot;&gt;Git&lt;/span&gt; (not required)',['../index.html#autotoc_md24',1,'']]],
+  ['git_20or_20make_20installed_37',['4. It says I don&apos;t have &lt;span class=&quot;tt&quot;&gt;Git&lt;/span&gt; or &lt;span class=&quot;tt&quot;&gt;Make&lt;/span&gt; installed!',['../index.html#autotoc_md30',1,'']]],
   ['graphic_5futils_2eh_38',['graphic_utils.h',['../graphic__utils_8h.html',1,'']]],
   ['guide_39',['Developer Guide',['../index.html',1,'']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['increment_5fblind_0',['increment_blind',['../blind_8c.html#aeca11c400d4afb3dd75216f77904ca2b',1,'increment_blind(enum BlindState increment_reason):&#160;blind.c'],['../blind_8h.html#aeca11c400d4afb3dd75216f77904ca2b',1,'increment_blind(enum BlindState increment_reason):&#160;blind.c']]],
+  ['increment_5fblind_0',['increment_blind',['../blind_8h.html#aeca11c400d4afb3dd75216f77904ca2b',1,'increment_blind(enum BlindState increment_reason):&#160;blind.c'],['../blind_8c.html#aeca11c400d4afb3dd75216f77904ca2b',1,'increment_blind(enum BlindState increment_reason):&#160;blind.c']]],
   ['init_5funbeaten_5fblinds_5flist_1',['init_unbeaten_blinds_list',['../blind_8c.html#a40c15210bb6306ece0a7240106e42543',1,'blind.c']]],
   ['init_5funbeaten_5fblinds_5flists_2',['init_unbeaten_blinds_lists',['../blind_8h.html#aedfd9b6abb09b4255160fe02ae1d018b',1,'init_unbeaten_blinds_lists(void):&#160;blind.c'],['../blind_8c.html#aedfd9b6abb09b4255160fe02ae1d018b',1,'init_unbeaten_blinds_lists(void):&#160;blind.c']]],
   ['is_5fgame_5fdata_5fvalid_3',['is_game_data_valid',['../save_8h.html#a0f9f87c5b74807464390321d01eeef80',1,'is_game_data_valid(void):&#160;save.c'],['../save_8c.html#a0f9f87c5b74807464390321d01eeef80',1,'is_game_data_valid(void):&#160;save.c']]],
